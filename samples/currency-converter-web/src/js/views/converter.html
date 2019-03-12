@@ -1,0 +1,42 @@
+<!--
+ Copyright (c) 2014, 2018, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<div class="oj-web-applayout-content"">
+    <h1>Currency Converter</h1>
+    <div class="oj-flex oj-flex-items-pad  oj-web-applayout-max-width">
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+            <oj-label for="inputCurrency">From Currency</oj-label>
+            <oj-select-one id="inputCurrency" options="[[currencyOptions]]" style="max-width: 100%;"
+                           value="{{selectedInputCurrencyIdx}}"></oj-select-one>
+        </div>
+        <div class="oj-flex-item oj-sm-12 oj-md-6 oj-lg-3">
+            <oj-label for="outputCurrency">To Currency</oj-label>
+            <oj-select-one id="outputCurrency" options="[[currencyOptions]]" style="max-width: 100%;"
+                           value="{{selectedOutputCurrencyIdx}}"></oj-select-one>
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-3">
+            <oj-label for="amount">Amount</oj-label>
+            <div class="nowrap">
+            <span data-bind="text: selectedInputCurrencyCode"></span>
+            <oj-input-text id="amount"
+                           value="{{amount}}"
+                           converter='{ "type": "number", "options": {  "style": "decimal", "minimumFractionDigits": 2 } }'
+                           style="max-width: 70%"
+            ></oj-input-text>
+            </div>
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-3">
+            <oj-label for="convertedAmount">Result</oj-label>
+            <div class="nowrap">
+                <span data-bind="text: selectedOutputCurrencyCode"></span>
+                <oj-input-text id="convertedAmount"
+                               value="{{convertedAmount}}"
+                               readonly
+                               converter='{ "type": "number", "options": {  "style": "decimal", "minimumFractionDigits": 2 } }'
+                               style="max-width: 70%"
+                ></oj-input-text>
+            </div>
+        </div>
+    </div>
+</div>

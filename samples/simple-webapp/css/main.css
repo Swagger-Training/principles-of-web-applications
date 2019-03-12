@@ -1,0 +1,22 @@
+body {
+    background-color: #FFF;
+}
+
+#title {
+    font-family: monospace;
+}
+
+.marginX {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+strong.marginX {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+h1 strong {
+    margin-left: 0rem;
+    margin-right: 0rem;
+}

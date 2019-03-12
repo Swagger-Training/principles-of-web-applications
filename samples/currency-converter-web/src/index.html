@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!--
+ Copyright (c) 2014, 2018, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+
+<!-- ************************ IMPORTANT INFORMATION ************************************
+  This web navigation drawer template is provided as an example of how to configure
+  a JET web application with a navigation drawer as a single page application
+  using ojRouter and oj-module.  It contains the Oracle JET framework and a default
+  requireJS configuration file to show how JET can be setup in a common application.
+  This project template can be used in conjunction with demo code from the JET
+  website to test JET component behavior and interactions.
+
+  Any CSS styling with the prefix "demo-" is for demonstration only and is not
+  provided as part of the JET framework.
+
+  Please see the demos under Cookbook/Patterns/App Shell: Web and the CSS documentation
+  under Support/API Docs/Non-Component Styling on the JET website for more information on how to use 
+  the best practice patterns shown in this template.
+
+  Aria Landmark role attributes are added to the different sections of the application
+  for accessibility compliance. If you change the type of content for a specific
+  section from what is defined, you should also change the role value for that
+  section to represent the appropriate content type.
+  ***************************** IMPORTANT INFORMATION ************************************ -->
+<html lang="en-us">
+  <head>
+    <title>Currency Converter</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
+    <link rel="icon" href="css/images/favicon.ico" type="image/x-icon" />
+
+    <!-- This is the main css file for the default Alta theme -->
+    <!-- injector:theme -->
+    <link rel="stylesheet" href="css/libs/oj/v5.0.0/alta/oj-alta-min.css" type="text/css"/>
+    <!-- endinjector -->
+    
+    <!-- This contains icon fonts used by the starter template -->
+    <link rel="stylesheet" href="css/demo-alta-site-min.css" type="text/css"/>
+
+    <!-- This is where you would add any app specific styling -->
+    <link rel="stylesheet" href="css/app.css" type="text/css"/>
+    <script src="https://use.fontawesome.com/6914ac605b.js"></script>
+
+  </head>
+  <body class="oj-web-applayout-body">
+    <!-- Template for rendering navigation items shared between nav bar and nav list -->
+    <script type="text/html" id="navTemplate">
+      <li><a href="#">
+        <span :class="[[$data['iconClass']]]"></span>
+        <oj-bind-text value="[[$data['name']]]"></oj-bind-text>
+      </a></li>
+    </script>
+
+    <div id="globalBody" class="oj-offcanvas-outer-wrapper oj-offcanvas-page">
+      <!--
+         ** Oracle JET V5.0.0 web application navigation drawer pattern.
+         ** Please see the demos under Cookbook/Patterns/App Shell: Web
+         ** and the CSS documentation under Support/API Docs/Non-Component Styling
+         ** on the JET website for more information on how to use this pattern. 
+         ** The off-canvas section is used when the browser is resized to a smaller media
+         ** query size for a phone format and hidden until a user clicks on
+         ** the header hamburger icon.
+      -->
+      <div id="navDrawer" role="navigation" class="oj-contrast-marker oj-web-applayout-offcanvas oj-offcanvas-start">
+        <oj-navigation-list data="[[navDataSource]]"
+                            edge="start"
+                            item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
+                            on-click="[[toggleDrawer]]"
+                            selection="{{router.stateId}}">
+        </oj-navigation-list>
+      </div>
+      <div id="pageContent" class="oj-web-applayout-page">
+        <!--
+           ** Oracle JET V5.0.0 web application header pattern.
+           ** Please see the demos under Cookbook/Patterns/App Shell: Web
+           ** and the CSS documentation under Support/API Docs/Non-Component Styling
+           ** on the JET website for more information on how to use this pattern.
+        -->
+        <header role="banner" class="oj-web-applayout-header">
+          <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
+            <!-- Offcanvas toggle button -->
+            <div class="oj-flex-bar-start oj-md-hide">
+              <oj-button id="drawerToggleButton" class="oj-button-lg" on-oj-action="[[toggleDrawer]]" chroming="half" display="icons">
+                <span slot="startIcon" class="oj-web-applayout-offcanvas-icon"></span>
+                <span>Application Navigation</span>
+              </oj-button>
+            </div>
+            <div class="oj-flex-bar-middle oj-sm-align-items-center">
+
+              <svg class="oj-sm-margin-2x-horizontal" version="1.0" xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 0 14360 6150" preserveAspectRatio="xMidYMid meet">
+                <g id="layer101" fill="#317aa8" stroke="none">
+                  <path d="M246 6134 c-95 -30 -178 -103 -218 -192 -30 -66 -38 -259 -13 -335 34 -109 110 -187 221 -229 l59 -23 1408 -3 1407 -3 0 -708 c0 -792 -2 -826 -64 -958 -40 -83 -92 -140 -162 -174 l-49 -24 -880 -5 c-774 -5 -886 -8 -927 -22 -114 -38 -191 -108 -230 -207 -32 -81 -32 -271 0 -352 39 -99 116 -169 230 -207 41 -14 153 -17 927 -22 l880 -5 49 -24 c70 -34 122 -91 162 -174 62 -132 64 -166 64 -958 l0 -708 -1407 -3 -1408 -3 -58 -22 c-113 -43 -193 -126 -223 -231 -23 -79 -15 -270 14 -334 24 -55 82 -122 133 -154 90 -57 13 -54 1608 -54 1583 0 1525 -2 1661 53 222 90 384 272 456 513 16 52 18 126 23 623 l6 563 958 -813 c527 -448 986 -833 1020 -856 85 -58 146 -78 237 -77 148 2 259 73 327 212 37 74 38 79 38 186 0 102 -2 116 -29 169 -15 32 -55 88 -88 123 -33 35 -648 564 -1367 1175 -718 612 -1327 1132 -1353 1157 -46 44 -47 47 -30 66 9 11 627 542 1372 1181 745 638 1375 1183 1399 1210 23 28 55 73 70 100 24 46 26 60 26 165 0 108 -2 119 -31 180 -43 88 -90 140 -166 180 -54 29 -75 35 -149 38 -104 5 -158 -10 -251 -70 -92 -60 -132 -93 -1095 -920 -485 -417 -885 -758 -888 -758 -3 0 -5 239 -5 530 0 445 -3 543 -16 608 -61 301 -293 534 -592 597 -103 22 -2984 21 -3056 -1z"/>
+                  <path d="M5404 3935 c-47 -32 -57 -133 -18 -176 31 -35 80 -39 467 -39 l377 0 0 -192 c0 -207 -8 -257 -45 -294 -24 -24 -24 -24 -275 -24 -315 0 -330 -6 -330 -119 0 -38 6 -56 24 -78 l24 -28 264 -5 c144 -3 271 -9 281 -14 10 -5 25 -23 35 -40 14 -26 18 -66 20 -248 l3 -218 -401 0 c-256 0 -408 -4 -421 -10 -43 -24 -62 -108 -36 -160 7 -14 28 -33 47 -42 32 -16 74 -18 427 -18 241 0 411 4 442 11 34 7 64 23 95 50 70 61 76 94 76 385 0 267 -7 324 -49 380 l-29 38 29 38 c42 58 49 115 49 379 0 265 -6 308 -53 364 -61 75 -58 75 -547 75 -366 0 -439 -2 -456 -15z"/>
+                  <path d="M6793 3935 c-12 -9 -27 -32 -33 -53 -15 -56 -13 -1446 3 -1492 24 -70 126 -90 178 -34 l24 26 5 430 5 429 264 -221 c145 -122 278 -231 295 -241 79 -48 166 0 166 91 0 28 -7 53 -18 66 -9 12 -111 99 -227 194 -115 95 -213 176 -218 180 -4 3 116 109 267 234 299 248 310 260 286 331 -16 49 -53 75 -105 75 -51 0 -42 6 -388 -283 l-237 -198 -28 19 c-61 44 -60 43 -64 234 -3 171 -4 177 -27 202 -20 21 -34 26 -76 26 -29 0 -60 -6 -72 -15z"/>
+                  <path d="M8149 3924 l-24 -26 0 -545 0 -545 28 -24 c50 -43 138 -28 168 28 6 12 14 52 18 90 l6 69 100 -82 c55 -45 124 -93 153 -106 50 -23 61 -25 200 -21 142 3 149 4 201 33 66 37 125 108 146 177 18 61 20 162 4 207 -22 63 -115 82 -170 33 -27 -24 -32 -37 -39 -98 -9 -86 -20 -109 -61 -123 -50 -17 -159 -14 -196 7 -18 9 -102 75 -187 146 l-156 128 0 277 c0 310 -3 341 -36 376 -19 21 -32 25 -77 25 -45 0 -58 -4 -78 -26z"/>
+                  <path d="M9687 3935 c-94 -35 -170 -115 -194 -207 -18 -71 -17 -251 2 -315 29 -98 130 -180 249 -202 33 -6 167 -11 298 -11 l238 0 0 -60 c0 -71 -19 -123 -52 -142 -16 -9 -89 -14 -251 -18 l-229 -5 -29 -33 c-49 -55 -36 -137 28 -167 29 -14 69 -16 276 -13 242 3 242 3 299 31 61 30 125 94 153 154 23 47 31 177 41 603 7 340 6 356 -35 387 -9 7 -38 13 -64 13 -41 0 -53 -5 -78 -29 -16 -16 -29 -37 -29 -45 0 -9 -2 -16 -5 -16 -3 0 -46 20 -95 45 l-90 45 -197 -1 c-142 0 -209 -4 -236 -14z m490 -262 l113 -58 0 -62 c0 -116 -34 -132 -292 -133 -270 0 -298 15 -298 157 0 142 14 152 220 153 l145 1 112 -58z"/>
+                  <path d="M11186 3919 l-26 -31 0 -454 0 -454 -55 0 c-98 0 -155 -39 -155 -107 0 -77 47 -113 148 -113 l60 0 4 -97 c3 -85 8 -105 33 -152 77 -141 196 -191 455 -190 194 0 235 20 235 114 0 42 -5 59 -20 75 -28 27 -111 40 -263 40 -138 0 -170 10 -202 63 -14 22 -20 50 -20 89 l0 56 136 4 136 3 29 33 c34 38 39 93 13 131 -28 39 -73 51 -198 51 l-115 0 -3 448 c-4 538 0 522 -118 522 -42 0 -52 -4 -74 -31z"/>
+                  <path d="M12650 3941 c-87 -27 -164 -94 -202 -176 -22 -49 -23 -59 -26 -416 l-3 -366 -72 -5 c-102 -7 -137 -35 -137 -109 0 -75 47 -109 151 -109 l59 0 0 -122 c0 -142 10 -189 47 -218 37 -29 103 -27 140 4 l28 24 3 156 3 156 205 0 c265 0 294 11 294 110 0 99 -28 110 -295 110 l-205 0 0 313 c0 171 5 330 10 352 5 22 21 50 35 63 24 20 36 22 151 22 70 0 134 -5 145 -11 11 -6 33 -39 49 -74 32 -72 50 -85 115 -85 135 0 143 173 15 302 -78 78 -117 88 -324 87 -89 0 -172 -4 -186 -8z"/>
+                  <path d="M13520 2680 l0 -170 -70 0 -70 0 0 -55 0 -55 200 0 200 0 0 55 0 55 -75 0 -75 0 0 170 0 170 -55 0 -55 0 0 -170z"/>
+                  <path d="M13830 2625 l0 -226 86 3 86 3 51 137 51 137 51 -139 50 -140 77 0 78 0 0 225 0 225 -55 0 -55 0 0 -137 -1 -138 -53 135 -53 135 -44 3 -44 3 -52 -133 -52 -133 -1 133 0 132 -60 0 -60 0 0 -225z"/>
+                </g>
+              </svg>
+              <h1 class="oj-sm-only-hide oj-web-applayout-header-title" title="Application Name"><oj-bind-text value="[[appName]]"></oj-bind-text></h1>
+            </div>
+          </div>
+          <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
+            <oj-navigation-list class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
+                                data="[[navDataSource]]"
+                                edge="top"
+                                item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
+                                selection="{{router.stateId}}">
+            </oj-navigation-list>
+          </div>
+        </header>
+        <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content" config="[[moduleConfig]]">
+        </oj-module>
+        <footer class="oj-web-applayout-footer" role="contentinfo">
+          <div class="oj-web-applayout-footer-item oj-web-applayout-max-width">
+            <ul>
+              <oj-bind-for-each data="[[footerLinks]]">
+                <template>
+                  <li><a :id="[[$current.data.linkId]]" :href="[[$current.data.linkTarget]]"><oj-bind-text value="[[$current.data.name]]"></oj-bind-text></a></li>
+                </template>
+              </oj-bind-for-each>
+            </ul>
+          </div>
+          <div class="oj-web-applayout-footer-item oj-web-applayout-max-width oj-text-secondary-color oj-text-sm">
+            Copyright © 2018 3kraft IT GmbH & Co KG.
+          </div>
+        </footer>
+      </div>
+    </div>
+    
+    <script type="text/javascript" src="js/libs/require/require.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+
+  </body>
+
+</html>

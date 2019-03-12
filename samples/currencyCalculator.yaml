@@ -1,0 +1,262 @@
+swagger: "2.0"
+
+info:
+  description: A simple Currency Calculator Service
+  version: 1.0.0
+  title: Currency Calculator
+  contact:
+    email: jan.illetschko@3kraft.com
+
+host: localhost
+
+basePath: /v1
+
+tags:
+  - name: public
+    description: Public Interface
+  - name: internal
+    description: Admin Interface
+
+schemes:
+  - http
+  - https
+
+paths:
+  /currencies:
+    get:
+      tags:
+        - public
+      summary: Get currencies
+      description: Gets all currencies
+      operationId: getCurrencies
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: name
+          type: string
+          required: false
+      responses:
+        200:
+          description: Succesfully retreived currencies
+          schema:
+            type: array
+            description: A list of currencies
+            items:
+              $ref: "#/definitions/Currency"
+          examples:
+            application/json:
+              - code: EUR
+                name: Euro
+                rate: 1.0
+              - code: USD
+                name: US Dollar
+                rate: 1.17641
+
+    post:
+      tags:
+      - internal
+      summary: Add currency
+      description: Creates a new currency
+      operationId: addCurrency
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: body
+        description: A currency object
+        required: true
+        schema:
+          $ref: "#/definitions/Currency"
+      security:
+        - basicAuth: []
+      responses:
+        400:
+          description: Invalid Currency/Already exists
+        200:
+          description: The created currency
+          schema:
+            $ref: "#/definitions/Currency"
+          examples:
+            application/json:
+              code: EUR
+              name: Euro
+              rate: 1.0
+
+  /currencies/{code}:
+    get:
+      tags:
+      - public
+      summary: Get currency
+      description: Gets a currency by code
+      operationId: getCurrency
+      parameters:
+        - name: code
+          description: A currency code
+          in: path
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        404:
+          description: Currency Not Found
+        200:
+          description: Successfully retreived currency
+          schema:
+            $ref: "#/definitions/Currency"
+          examples:
+            application/json:
+              code: EUR
+              name: Euro
+              rate: 1.0
+    put:
+      tags:
+      - internal
+      summary: Update currency
+      description: Crteates or updates a currency
+      operationId: upatesCurrency
+      consumes:
+        - application/json
+      parameters:
+        - name: code
+          description: A currency code
+          in: path
+          type: string
+          required: true
+        - in: body
+          name: body
+          description: A currency object
+          required: true
+          schema:
+            $ref: "#/definitions/Currency"
+      security:
+        - basicAuth: []
+      responses:
+        400:
+          description: Invalid Currency
+        404:
+          description: Currency not found
+        204:
+          description: The created currency
+
+    patch:
+      tags:
+      - internal
+      summary: Update currency rate
+      description: Updates the current rate of an existing currency
+      operationId: updateCurrencyRate
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: code
+          description: A currency code
+          in: path
+          type: string
+          required: true
+        - in: body
+          name: CurrencyRate
+          description: A currency rate object
+          required: true
+          schema:
+            $ref: "#/definitions/Amount"
+      security:
+        - basicAuth: []
+      responses:
+        400:
+          description: Invalid Currency
+        404:
+          description: Currency not found
+        200:
+          description: The created currency
+          schema:
+            $ref: "#/definitions/Currency"
+          examples:
+            application/json:
+              code: EUR
+              name: Euro
+              rate: 1.0
+
+    delete:
+      tags:
+      - internal
+      summary: Delete currency
+      description: Deletes a currency
+      operationId: deleteCurrency
+      parameters:
+        - name: code
+          description: A currency code
+          in: path
+          type: string
+          required: true
+      security:
+        - basicAuth: []
+      responses:
+        404:
+          description: Currency Not Found
+        204:
+          description: Successfully deleted currency
+
+  /convert:
+    get:
+      tags:
+        - public
+      summary: Convert amount
+      description: Converts a given amount in one currency to the corresponding amount in an different currency
+      operationId: convert
+      produces:
+        - application/json
+      parameters:
+        - name: amount
+          description: The amount to convert
+          in: query
+          required: true
+          type: number
+          format: double
+        - name: inputCurrency
+          description: Code of the input curency
+          in: query
+          required: true
+          type: string
+        - name: outputCurrency
+          description: Code of the output curency
+          in: query
+          required: true
+          type: string
+      responses:
+        404:
+          description: Currency Not Found
+        200:
+          description: The converted amount
+          schema:
+            $ref: "#/definitions/Amount"
+
+securityDefinitions:
+  basicAuth:
+    type: basic
+
+definitions:
+  Currency:
+    type: object
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      rate:
+        type: number
+        format: double
+    required:
+      - code
+      - name
+      - rate
+  Amount:
+    type: object
+    properties:
+      amount:
+        type: number
+        format: double

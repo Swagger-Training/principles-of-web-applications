@@ -1,0 +1,19 @@
+{
+  "name": "restful-ws",
+  "version": "1.0.0",
+  "description": "A very simple restful webservice.",
+  "main": "index.js",
+  "bin": {
+    "ws": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jan Illetschko <jan.illetschko@3kraft.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.16.3",
+    "expressjs": "^1.0.1"
+  }
+}

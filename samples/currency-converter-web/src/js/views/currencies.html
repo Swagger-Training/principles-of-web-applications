@@ -1,0 +1,53 @@
+<div class="oj-web-applayout-content">
+
+    <h1>Currencies Editor</h1>
+
+    <div class="oj-flex oj-flex-items-pad  oj-web-applayout-max-width">
+
+        <div class="oj-flex-item oj-sm-12 oj-md-8">
+            <div class="oj-panel" style="overflow-x: auto">
+                <oj-table data="{{currenciesDataSource}}"
+                          summary="Currencies"
+                          columns='[{"headerText": "Currency Code", "field": "code"},
+                      {"headerText": "Currency Name", "field": "name"},
+                      {"headerText": "Exchange Rate", "field": "rate"},
+                      {"headerText": "Action"}]'
+                          row-renderer="[[oj.KnockoutTemplateUtils.getRenderer('rowTemplate', true)]]"
+                          selection-mode.row="single"
+                          on-selection-changed="[[selected]]"
+                ></oj-table>
+            </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-12 oj-md-4">
+            <div class="oj-panel">
+                <h1 class="oj-header-border">Edit Currencies</h1>
+                <div class="oj-form-layout">
+                    <div class="oj-form">
+                        <oj-label for="code">Currency Code</oj-label>
+                        <oj-input-text id="code" value="{{code}}" required></oj-input-text>
+
+                        <oj-label for="name">Currency Name</oj-label>
+                        <oj-input-text id="name" value="{{name}}" required></oj-input-text>
+
+                        <oj-label for="rate">Exchange Rate</oj-label>
+                        <oj-input-text id="rate" value="{{rate}}" required min="0.00"
+                                       converter='{ "type": "number", "options": {  "style": "decimal", "minimumFractionDigits": 2 } }'></oj-input-text>
+                    </div>
+                </div>
+
+                <oj-button on-click="[[save]]">Save Currency</oj-button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/html" id="rowTemplate">
+        <tr>
+            <td data-bind="text: code"></td>
+            <td data-bind="text: name"></td>
+            <td data-bind="text: rate"></td>
+            <td><a href="#" data-bind="click: $parent.remove"><span class="fa fa-trash"></span></a></td>
+        </tr>
+    </script>
+
+</div>
