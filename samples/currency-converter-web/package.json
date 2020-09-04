@@ -10,7 +10,7 @@
     "@oracle/oraclejet-tooling": "~5.0.0",
     "grunt": "^1.0.1",
     "load-grunt-config": "0.19.2",
-    "node-sass": "^4.7.2",
+    "node-sass": "^4.13.1",
     "qunit": "^2.4.1",
     "qunit-reporter-junit": "^1.1.1"
   },
